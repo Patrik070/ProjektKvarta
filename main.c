@@ -133,12 +133,19 @@ if(calc<2){
 return 0;
 }
 
-void upravitMenu(int n, Thraci h[]){
+
+int vyhledat(Thraci h[], int n, int druh)
+{
     char volba;
     int x;
     do{
     system("cls");
-    printf("Jak chces vyhledat hrace na upravu:\n");
+    system("color 07");
+    if(druh ==0){
+        printf("Jak chces vyhledat hrace:\n");
+    }else{
+        printf("Jak chces vyhledat hrace na upravu:\n");
+    }
     printf("\t1 - Podle FIDE ID\n");
     printf("\t2 - Podle parametru\n");
     printf("\t0 - Domu, do Prahy...\n");
@@ -146,41 +153,118 @@ void upravitMenu(int n, Thraci h[]){
     scanf("%c",&volba);
     }while(volba>50||volba<48);
     switch(volba){
-    case 49:{
-        int key;
-        do{
-        do{
-            system("cls");
-            system("color 07");
-            printf("Zadej FIDE ID hrace, nebo 0\n");
-            scanf("%d",&key);
-        if(key==0)
-            return;
+        case 48:
+            {
+                return -1;
+                break;
+            }
+        case 49:
+            {
+                int key;
+                do{
+                do{
+                    system("cls");
+                    system("color 07");
+                    printf("Zadej FIDE ID hrace, nebo 0\n");
+                    scanf("%d",&key);
+                if(key==0)
+                    return -1;
 
-        if(key<1000000||key>99999999){
-            system("color 04");
-            printf("Mimo rozsah\n");
-            system("pause");
-        }
-        }while(key<1000000||key>99999999);
-        x = vyhledatID(key, n, h);
-        if(x==-1){
-            system("color 04");
-            printf("Hrac nenalezen\n");
-            system("pause");
-        }
-        }while(x==-1);
+                if(key<1000000||key>99999999){
+                    system("color 04");
+                    printf("Mimo rozsah\n");
+                    system("pause");
+                }
+                }while(key<1000000||key>99999999);
+                x = vyhledatID(key, n, h);
+                if(x==-1){
+                    system("color 04");
+                    printf("Hrac nenalezen\n");
+                    system("pause");
+                }
+                }while(x==-1);
+                vypisJedna(h[x]);
+                break;
+            }
+        case 50:
+            {
+                int count =n;
+                do{
+                    do{
+                        system("cls");
+                        system("color 07");
+                        printf("Zbyva %d hracu\n",count);
+                        if(druh ==0){
+                            printf("Podle jakych parametru chces vyhledat hrace:\n");
+                        }else{
+                            printf("Podle jakych parametru chces vyhledat hrace na upravu:\n");
+                        }
+
+                        printf("\t1 - Podle jmena\n");
+                        printf("\t2 - Podle prijmeni\n");
+                        printf("\t3 - Podle roku narozeni\n");
+                        printf("\t0 - Domu, do Prahy...\n");
+                        fflush(stdin);
+                        scanf("%c",&volba);
+                        }while(volba>51||volba<48);
+                        count = 0;
+                        switch(volba){
+                        case 48:
+                            {
+                                return -1;
+                                break;
+                            }
+                        case 49:
+                            {
+                                char jmeno[20];
+                                do{
+                                    system("cls");
+                                    system("color 07");
+                                    printf("Zadej jmeno hrace:");
+                                    scanf("%19s",jmeno);
+                                }while(validace(jmeno,19));
+                                for(int i=0;i<n;i++){
+                                    if(strcmp(h[i].jmeno,jmeno)!=0){
+                                        h[i].smazano = 1;
+                                    }else{
+                                        count++;
+                                        x=i;
+                                    }
+                                }
+                            }
+
+                        }
+                if(count == 0){
+                    system("color 04");
+                    printf("Nikdo nenalezen\n");
+                    for(int i=0;i<n;i++){
+                    h[i].smazano = 0;
+                }
+                system("pause");
+                }else{
+                    vypsat(h,n);
+                }
+                }while(count !=1);
+                for(int i=0;i<n;i++){
+                    h[i].smazano = 0;
+                }
+
+                break;
+            }
+    }
+return x;
+}
 
 
-        break;
-
-
-    }}
+void upravitMenu(int n, Thraci h[]){
+    char volba;
+    int x = vyhledat(h,n,0);
+    if(x==-1){
+        return;
+    }
     char nazev[8][20]={"FIDE ID","Titul","Jmeno","Prijmeni","Elo","Max Elo","Narod","Narozeni"};
-
-    volba = ERR;
     system("cls");
-    vypisJedna(h[x]);
+    //vypisJedna(h[x]);
     do{
     system("cls");
     printf("Co chces upravit:\n");
@@ -310,6 +394,8 @@ void upravitMenu(int n, Thraci h[]){
     }
 
     }while(h[x].elo<1000 || h[x].elo>3000);
+    if(h[x].elo>h[x].maxelo)
+        h[x].maxelo=h[x].elo;
 
     break;
     }
@@ -367,6 +453,9 @@ void upravitMenu(int n, Thraci h[]){
 
 }
 
+
+
+
 int login(FILE *p)
 {
     char password[20];
@@ -413,8 +502,6 @@ int adminset(){
         printf("0 - Exit\n");
         scanf("%c",&volba);
         fflush(stdin);
-       // printf("%d",volba);
-      //  system("pause");
     }while(volba<48 || volba>51);
     return volba;
 
@@ -469,7 +556,7 @@ Thraci pridati(){
 Thraci player;
 player.elo = 2000;
 player.fideID = 500;
-strcpy(player.jmeno,"JAn");
+strcpy(player.jmeno,"Jan");
 player.maxelo = 2500;
 strcpy(player.nation,"Rus");
 strcpy(player.prijmeni,"Novak");
@@ -709,7 +796,7 @@ int main(){
         vypsat(player, n);
         break;
     case 50:
-        //vyhledat();
+        vyhledat(player,n,0);
         break;
     case 51:
         //menu++();

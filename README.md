@@ -12,17 +12,16 @@ V souboru budou alespoň 3 atributy - minimálně 1 číselný a minimálně 1 �
 
 Práce s databází:
 
--vložit nový záznam - A
--oprava existujícího záznamu - A
--vymazání záznamu - A
+-vložit nový záznam - DONE
+-oprava existujícího záznamu - DONE
+-vymazání záznamu - DONE
 -tisk celé databáze na obrazovku - DONE
--seřazení - soucast
+-seřazení - WIP
 -hledání podle různých kritérií - WIP
--souhrn (počet žen, průměrný věk žen, počet vodních pokémonů, počet (zatím) živých Lannisterů ... podle tématu databáze)
+-souhrn (počet žen, průměrný věk žen, počet vodních pokémonů, počet (zatím) živých Lannisterů ... podle tématu databáze) WIP
 
 Dodatek:
 
-Můžete pracovat s více soubory (nemusíte všechno "narvat" do jednoho souboru a pak komplikovaně programátorsky řešit separaci záznamů).
 Kompilace musí projít bez chyb i varování!
 Zaměřte se i na ošetření chybných vstupů (předpokládejte uživatele s IQ<60)
 
