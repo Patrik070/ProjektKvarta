@@ -12,12 +12,12 @@ V souboru budou alespoň 3 atributy - minimálně 1 číselný a minimálně 1 �
 
 Práce s databází:
 
--vložit nový záznam
--oprava existujícího záznamu
--vymazání záznamu
--tisk celé databáze na obrazovku
--seřazení
--hledání podle různých kritérií
+-vložit nový záznam - A
+-oprava existujícího záznamu - A
+-vymazání záznamu - A
+-tisk celé databáze na obrazovku - WIP
+-seřazení - soucast
+-hledání podle různých kritérií - WIP
 -souhrn (počet žen, průměrný věk žen, počet vodních pokémonů, počet (zatím) živých Lannisterů ... podle tématu databáze)
 
 Dodatek:
