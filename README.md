@@ -15,7 +15,7 @@ Práce s databází:
 -vložit nový záznam - A
 -oprava existujícího záznamu - A
 -vymazání záznamu - A
--tisk celé databáze na obrazovku - WIP
+-tisk celé databáze na obrazovku - DONE
 -seřazení - soucast
 -hledání podle různých kritérií - WIP
 -souhrn (počet žen, průměrný věk žen, počet vodních pokémonů, počet (zatím) živých Lannisterů ... podle tématu databáze)
