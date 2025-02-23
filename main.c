@@ -70,7 +70,7 @@ int menu(int admin){
         system("cls");
         printf("\t Hlavni menu\n");
         printf("1 - Vypsat\n");
-        printf("2 - xVyhledat\n");
+        printf("2 - Vyhledat\n");
         printf("3 - xZobraz info\n");
         printf("4 - xSerad podle ela\n");
         if(admin==0){
@@ -258,7 +258,7 @@ return x;
 
 void upravitMenu(int n, Thraci h[]){
     char volba;
-    int x = vyhledat(h,n,0);
+    int x = vyhledat(h,n,1);
     if(x==-1){
         return;
     }
@@ -462,12 +462,15 @@ int login(FILE *p)
     char heslo[20];
     system("cls");
     if(fscanf(p,"%19s",password)==1){
+            do{
+        system("color 07");
+        system("cls");
         printf("Zadej heslo, nebo 0 k vraceni zpet\n");
         scanf("%19s",heslo);
         //printf("%s",heslo);
         if(strcmp(heslo,"0")==0){
-            printf("exiting");
-            system("timeout /t 2");
+            //printf("exiting");
+            //system("timeout /t 2");
             return 0;
             }
         if(strcmp(heslo,password)==0){
@@ -478,9 +481,9 @@ int login(FILE *p)
             system("color 04");
             printf("Spatne heslo\n");
             system("pause");
-            return 0;
+            //return 0;
         }
-
+    }while(strcasecmp(heslo,"0")!=0);
     }
     system("color 04");
     printf("Error");
@@ -785,7 +788,7 @@ int main(){
     fclose(in);
 
     int volba;
-    int admin = 1;
+    int admin = false;
     do{
     volba = menu(admin);
     printf("OK");
