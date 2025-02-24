@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <conio.h>
+
+//primary key je unikatni
 
 #define MAX 200
 #define ERR 48
@@ -84,8 +87,8 @@ int menu(int admin){
         printf("\t9 - Zapsat???\n");
         }
         printf("0 - Exit\n");
-        scanf("%c",&volba);
         fflush(stdin);
+        volba = getch();
     if(admin==0 && volba>53){
         volba = ERR-1;
     }
@@ -781,7 +784,7 @@ int main(){
         system("timeout /t 1");
         return -3;
         }
-    //oblig·tnÌ pr·ce se soubory
+    //oblig√°tn√≠ pr√°ce se soubory
 
     Thraci player[MAX];
     int n = nacti(in, player);
