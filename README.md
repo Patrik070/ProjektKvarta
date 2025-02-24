@@ -1,8 +1,4 @@
-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
-
-# projektheslo
-Zaměření projektu: Práce se soubory (databází)
-
+# projekthesloZaměření projektu: Práce se soubory (databází)
 Odevzdává se kompletní projekt realizovaný v jazyce C + dokumentace (dokument popisující pro uživatele práci s programem)
 
 KOMPLET ODEVZDÁNÍ DO 4. 5. 2025 (VČETNĚ)
