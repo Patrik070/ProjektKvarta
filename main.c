@@ -22,6 +22,20 @@ typedef struct{
     int smazano;
 } Thraci;
 
+int ziskatstring(char volba[20]){
+    char x;
+    int i=0;
+do{
+    x = getch();
+    if(x>48 && x<91){
+        volba[i]=x;
+        i++;
+    }else if(x==8){
+        i--;
+    }
+}while(x!=1);
+return i;
+}
 
 int zapis(Thraci player[], int n){
    FILE *in = fopen("hraci.txt","w");
@@ -153,7 +167,7 @@ int vyhledat(Thraci h[], int n, int druh)
     printf("\t2 - Podle parametru\n");
     printf("\t0 - Domu, do Prahy...\n");
     fflush(stdin);
-    scanf("%c",&volba);
+    volba = getch;
     }while(volba>50||volba<48);
     switch(volba){
         case 48:
