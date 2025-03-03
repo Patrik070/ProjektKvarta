@@ -30,3 +30,4 @@ Seřazení podle více kritérií: nejdříve podle jednoho kritéria a poté po
 Něco dalšího, co vás napadne (po diskuzi s vyučujícím).
 
 Téma práce (konkrétní realizace) si každý student volí sám (popř. prodiskutuje s vyučujícím).
+i<50
