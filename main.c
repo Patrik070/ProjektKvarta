@@ -4,12 +4,15 @@
 #include <string.h>
 #include <conio.h>
 #include <ctype.h>
+#include <stdint.h>
+#include <inttypes.h>
+
 
 #define MAX 200
 #define ERR 48
 
 
-typedef struct{
+typedef struct{//definice struktury
     int fideID;
     char jmeno[20];
     char prijmeni[20];
@@ -21,7 +24,8 @@ typedef struct{
     int smazano;
 } Thraci;
 
-int narozeni(int rok){
+int narozeni(int rok){//kontrola platnosti zadaneho narozeni pro while cyklus
+
 if(rok<1500 || rok > 2025){
     return 1;
 }
@@ -29,8 +33,7 @@ return 0;
 }
 
 
-
-void vypsat(Thraci p[], int n){
+void vypsat(Thraci p[], int n){//vypisovani na terminal
     system("cls");
     printf("\t\t\t\t\tTabulka hracu\n");
     char nazev[8][20]={"FIDE ID","Titul","Jmeno","Prijmeni","Elo","Max Elo","Narod","Narozeni"};
@@ -67,7 +70,7 @@ int zapis(Thraci player[], int n){
             }
             fclose(in);
 
-return 0;
+return 1;
 }
 
 
@@ -103,7 +106,7 @@ int menu(int admin){
         printf("\t Hlavni menu\n");
         printf("1 - Vypsat\n");
         printf("2 - Vyhledat\n");
-        printf("3 - xZobraz info\n");
+        printf("3 - Zobraz info\n");
         printf("4 - Serad podle ela\n");
         if(admin==0){
         printf("5 - sudo su\n");
@@ -218,6 +221,7 @@ int vyhledat(Thraci h[], int n, int druh)
                                     system("color 07");
                                     printf("Zadej jmeno hrace:");
                                     scanf("%19s",jmeno);
+                                    fflush(stdin);
                                 }while(validace(jmeno,19));
                                 strupr(jmeno);
                                 char pomocna[20];
@@ -242,6 +246,7 @@ int vyhledat(Thraci h[], int n, int druh)
                                     system("color 07");
                                     printf("Zadej prijmeni hrace:");
                                     scanf("%19s",prijmeni);
+                                    fflush(stdin);
                                 }while(validace(prijmeni,19));
                                 strupr(prijmeni);
                                 char pomocna[20];
@@ -420,6 +425,7 @@ do{
         printf("%-11s",nazev);
         fflush(stdin);
         scanf("%19s",h.jmeno);
+        fflush(stdin);
 
     }while(validace(h.jmeno,19));
     strlwr(h.jmeno);
@@ -440,6 +446,7 @@ do{
         printf("%-11s",nazev);
         fflush(stdin);
         scanf("%19s",h.prijmeni);
+        fflush(stdin);
 
     }while(validace(h.prijmeni,19));
     strlwr(h.prijmeni);
@@ -514,6 +521,7 @@ do{
         printf("%-11s",nazev);
         fflush(stdin);
         scanf("%4s",h.nation);
+        fflush(stdin);
 
     }while(validace(h.nation,4));
     strupr(h.nation);
@@ -555,7 +563,7 @@ do{
         printf("\t Uprava FIDE ID hrace\n");
         }else{
         printf("\t Nastaveni FIDE ID hrace\n");}
-        printf("1000000-99999999\n");
+        printf("1.000.000-99.999.999\n");
         printf("%-11s",nazev);
         //player.fideID=89745632;
         scanf("%d",&player.fideID);
@@ -611,7 +619,9 @@ int upravitMenu(int n, Thraci h[]){
     switch(volba)
     {
     case 48:{
-        zapis(h,n);
+        if(zapis(h,n)==-3){
+            return -3;
+        }
         return n;
         break;}
     case 56:{
@@ -622,7 +632,9 @@ int upravitMenu(int n, Thraci h[]){
         potvrzeni=getch();
         if(potvrzeni=='y'){
             h[x].smazano=1;
-            zapis(h,n);
+            if(zapis(h,n)==-3){
+            return -3;
+        }
             return n-1;
         }
         break;}
@@ -666,31 +678,47 @@ int upravitMenu(int n, Thraci h[]){
         h[x]=Zmenafide(1,h[x],nazev[0],h,n);
 
     }}while(volba!=0);
-    zapis(h,n);//pro jistotu
+    if(zapis(h,n)==-3){
+            return -3;
+        }//pro jistotu
 return n;
 }
 
 
 
+ uint64_t hash(char password[]) {
+     uint64_t hash = 0;
+    int len = strlen(password);
+
+    for (int i = 0; i < len; i++) {
+        hash ^= password[i];  // XOR each character
+        hash = (hash << 5) | (hash >> 27);  // Rotate left by 5 bits
+    }
+    return hash;
+}
+
 
 int login(FILE *p)
 {
-    char password[20];
+     uint64_t password;
     char heslo[20];
     system("cls");
-    if(fscanf(p,"%19s",password)==1){
+    if(fscanf(p,"%"SCNu64,&password)==1){
             do{
         system("color 07");
         system("cls");
         printf("Zadej heslo, nebo 0 k vraceni zpet\n");
         scanf("%19s",heslo);
+        fflush(stdin);
         //printf("%s",heslo);
         if(strcmp(heslo,"0")==0){
             //printf("exiting");
             //system("timeout /t 2");
             return 0;
             }
-        if(strcmp(heslo,password)==0){
+            //printf("%" PRIu64,hash(heslo));
+            //system("pause");
+        if(hash(heslo)==password){
             printf("Heslo uspesne zadano");
             return 1;
         }else{
@@ -700,7 +728,7 @@ int login(FILE *p)
             system("pause");
             //return 0;
         }
-    }while(strcasecmp(heslo,"0")!=0);
+    }while(1);
     }
     system("color 04");
     printf("Error");
@@ -733,9 +761,12 @@ int changepass(char nove[]){
     system("cls");
     printf("Zadej nove heslo: ");
     scanf("%19s",heslo);
+    fflush(stdin);
     printf("\nZadej heslo znovu: ");
     scanf("%19s",kontrola);
+    fflush(stdin);
     if(strcmp(kontrola,heslo)==0){
+        system("cls");
         strcpy(nove,heslo);
         system("color 0A");
         printf("heslo zmeneno!\n");
@@ -776,25 +807,25 @@ void pridavani(int x, char nazev[][20], Thraci player, Thraci p[],int n)
         if(x>1)
         printf("1 - %-10s %-5s\n",nazev[1],player.titul);
         if(x>2)
-        printf("%-10s %-20s\n",nazev[2],player.jmeno);
+        printf("2 - %-10s %-20s\n",nazev[2],player.jmeno);
         if(x>3)
-        printf("%-10s %-20s\n",nazev[3],player.prijmeni);
+        printf("3 - %-10s %-20s\n",nazev[3],player.prijmeni);
         if(x>4)
-        printf("%-10s %d\n",nazev[4],player.elo);
+        printf("4 - %-10s %d\n",nazev[4],player.elo);
         if(x>5)
-        printf("%-10s %d\n",nazev[5],player.maxelo);
+        printf("5 - %-10s %d\n",nazev[5],player.maxelo);
         if(x>6)
-        printf("%-10s %-5s\n",nazev[6],player.nation);
+        printf("6 - %-10s %-5s\n",nazev[6],player.nation);
         if(x>7)
-        printf("%-10s %d\n",nazev[7],player.rokNarozeni);
-        printf("Adekvtatni cislo pro zmenu nebo press any key to continue\n");
+        printf("7 - %-10s %d\n",nazev[7],player.rokNarozeni);
+        printf("Adekvatni cislo pro zmenu nebo press any key to continue\n");
         int volba = getch();
         if(volba>=x+48){
             volba=5;
         }
         switch(volba){
         case 48:
-            Zmenafide(0,player,nazev[0],p,n);
+            player = Zmenafide(0,player,nazev[0],p,n);
             break;
         case 49:
             player = Zmenatitul(0,player,nazev[1]);
@@ -931,6 +962,11 @@ void aboutUs(){
 }
 
 void ISprogram(Thraci h[],int n){
+    Thraci pom[MAX];
+    for(int i=0;i<n;i++){
+        pom[i]=h[i];
+    }
+    seradES(pom,n);
 int soucet=0;
 int maxPoz = 0;
 char informace[5][50] = {"pocet hracu jest:","prumerne elo jest:","nejvyssi elo jest:","nejvyssi elo ma:","median ela jest:"};
@@ -946,9 +982,9 @@ char informace[5][50] = {"pocet hracu jest:","prumerne elo jest:","nejvyssi elo 
     printf("%-20s%-4d\n",informace[2],h[maxPoz].elo);
     printf("%-20s%s %s\n",informace[3],h[maxPoz].jmeno,h[maxPoz].prijmeni);
     if(n%2==0){
-
+        printf("%-20s%.2f\n",informace[4],(pom[n/2].elo+pom[n/2-1].elo)*1.0/2);
     }else{
-        printf("%-20s%-4d",informace[4],h[n/2].elo);
+        printf("%-20s%.2d\n",informace[4],pom[n/2].elo);
     }
 
 
@@ -958,6 +994,8 @@ char informace[5][50] = {"pocet hracu jest:","prumerne elo jest:","nejvyssi elo 
 }
 
 int main(){
+    //printf("%"PRIu64,hash("heslo"));
+    //system("pause");
     FILE *in = fopen("hraci.txt","r");
     if(in == NULL){
         system("color 04");
@@ -965,7 +1003,7 @@ int main(){
         system("timeout /t 1");
         return -3;
         }
-    //obligÃ¡tnÃ­ prÃ¡ce se soubory
+    //obligátní práce se soubory
 
     Thraci player[MAX];
     int n = nacti(in, player);
@@ -1062,7 +1100,7 @@ int main(){
                                 system("pause");
                                 break;
                             }
-                            fprintf(password,"%s",noveHeslo);}
+                            fprintf(password,"%"PRIu64,hash(noveHeslo));}
                         }
                         fclose(password);
                     }
@@ -1101,8 +1139,24 @@ int main(){
         break;
 
         case 55:
-            n = upravitMenu(n, player);
-            break;
+            {
+
+
+            FILE *in = fopen("hraci.txt","r");
+            if(in == NULL){
+                system("color 04");
+                printf("Error 404: File hraci.txt not found :(");
+                system("timeout /t 1");
+                return -3;
+                }
+            //obligátní práce se soubory
+
+            if(upravitMenu(n, player)==-3){
+                return -3;
+            }
+            n = nacti(in, player);
+            fclose(in);
+            break;}
         case 56:
             aboutUs();
             break;

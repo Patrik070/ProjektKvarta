@@ -1,9 +1,13 @@
 # depslib dependency file v1.0
-1740338795 source:c:\patrik\gvid\heslo\projektheslo\main.c
+1742744040 source:c:\patrik\gvid\heslo\projektheslo\main.c
 	<stdlib.h>
 	<stdio.h>
 	<stdbool.h>
 	<string.h>
+	<conio.h>
+	<ctype.h>
+	<stdint.h>
+	<inttypes.h>
 
 1741595433 source:r:\4g\projektheslo-main\main.c
 	<stdlib.h>
