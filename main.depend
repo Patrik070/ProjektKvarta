@@ -1,7 +1,0 @@
-# depslib dependency file v1.0
-1740338795 source:c:\patrik\gvid\heslo\projektheslo\main.c
-	<stdlib.h>
-	<stdio.h>
-	<stdbool.h>
-	<string.h>
-
