@@ -12,8 +12,8 @@ Práce s databází:
 -oprava existujícího záznamu - DONE
 -vymazání záznamu - DONE
 -tisk celé databáze na obrazovku - DONE
--seřazení - DONE
--hledání podle různých kritérií - DONE
+-seřazení - WIP
+-hledání podle různých kritérií - WIP
 -souhrn (počet žen, průměrný věk žen, počet vodních pokémonů, počet (zatím) živých Lannisterů ... podle tématu databáze) WIP
 
 Dodatek:
@@ -23,9 +23,11 @@ Zaměřte se i na ošetření chybných vstupů (předpokládejte uživatele s I
 
 Práce navíc:
 
-Chráněno heslem (část pro správce a část pro uživatele) -WIP
-Hledání podle více kritérií zároveň. - DONE
-Seřazení podle více kritérií: nejdříve podle jednoho kritéria a poté podle druhého. - DONE
-Něco dalšího, co vás napadne (po diskuzi s vyučujícím). - 
+Chráněno heslem (část pro správce a část pro uživatele)
+Práce s dynamickým polem.
+Hledání podle více kritérií zároveň.
+Seřazení podle více kritérií: nejdříve podle jednoho kritéria a poté podle druhého.
+Něco dalšího, co vás napadne (po diskuzi s vyučujícím).
 
 Téma práce (konkrétní realizace) si každý student volí sám (popř. prodiskutuje s vyučujícím).
+i<50
