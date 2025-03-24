@@ -10,6 +10,14 @@
 
 #define MAX 200
 #define ERR 48
+#define RED "\x1b[31m"
+#define GREEN "\x1b[32m"
+#define YELLOW "\x1b[33m"
+#define BLUE "\x1b[34m"
+#define MAGENTA "\x1b[35m"
+#define CYAN "\x1b[36m"
+#define RESET "\x1b[0m"
+#define BLACK "\e[4;30m"
 
 
 typedef struct{//definice struktury
@@ -37,7 +45,7 @@ void vypsat(Thraci p[], int n){//vypisovani na terminal
     system("cls");
     printf("\t\t\t\t\tTabulka hracu\n");
     char nazev[8][20]={"FIDE ID","Titul","Jmeno","Prijmeni","Elo","Max Elo","Narod","Narozeni"};
-    printf(" %-7s %-5s %-19s %-21s %-9s %-7s %-6s %-6s\n",nazev[0],nazev[1],nazev[2],nazev[3],nazev[4],nazev[5],nazev[6],nazev[7]);
+    printf(CYAN" %-7s %-5s %-19s %-21s %-9s %-7s %-6s %-6s\n"RESET,nazev[0],nazev[1],nazev[2],nazev[3],nazev[4],nazev[5],nazev[6],nazev[7]);
     for(int i=0;i<n;i++){
         if(p[i].smazano == 0){
             printf("%8d",p[i].fideID);
@@ -58,8 +66,7 @@ void vypsat(Thraci p[], int n){//vypisovani na terminal
 int zapis(Thraci player[], int n){
    FILE *in = fopen("hraci.txt","w");
             if(in == NULL){
-                system("color 04");
-                printf("Error 404: File hraci.txt not found :(");
+                printf(RED"Error 404: File hraci.txt not found :("RESET);
                 system("timeout /t 1");
                 return -3;
             }
@@ -77,8 +84,7 @@ return 1;
 void vypisJedna(Thraci player){
 char nazev[8][20]={"FIDE ID","Titul","Jmeno","Prijmeni","Elo","Max Elo","Narod","Narozeni"};
 system("cls");
-        system("color 08");
-        printf("\t Profil hrace\n");
+        printf(CYAN"\t Profil hrace\n"RESET);
         printf("%-10s %d\n",nazev[0],player.fideID);
         printf("%-10s %-5s\n",nazev[1],player.titul);
         printf("%-10s %-20s\n",nazev[2],player.jmeno);
@@ -99,11 +105,10 @@ int nacti(FILE *in, Thraci p[]){
 }
 
 int menu(int admin){
-    system("color 07");
     char volba;
     do{
         system("cls");
-        printf("\t Hlavni menu\n");
+        printf("\e[1;92m""\t Hlavni menu\n"RESET);
         printf("1 - Vypsat\n");
         printf("2 - Vyhledat\n");
         printf("3 - Zobraz info\n");
@@ -111,14 +116,14 @@ int menu(int admin){
         if(admin==0){
         printf("5 - sudo su\n");
         }else{
-        printf("Root nastaveni:\n");
+        printf(MAGENTA"Root nastaveni:\n"RESET);
         printf("\t5 - nastaveni\n");
         printf("\t6 - Pridat\n");
         printf("\t7 - Upravit\n");
         printf("\t8 - About me\n");
         printf("\t9 - Zapsat\n");
         }
-        printf("0 - Exit\n");
+        printf(RED "0 - Exit\n"RESET);
         fflush(stdin);
         volba = getch();
     if(admin==0 && volba>53){
@@ -145,22 +150,19 @@ bool validace(char ch[], int max){//
 	int calc = 0;
 	for(int i = 0;ch[i]!='\0';i++){
         	if(!(((ch[i]>='a')&&(ch[i]<='z')) || ((ch[i]>='A')&&(ch[i]<='Z')))){
-                system("color 04");
-            	printf("\nPouze pismena!\n");
+            	printf(RED"\nPouze pismena!\n"RESET);
             	system("pause");
             	return 1;
         	}
     	calc++;
 	}
 if(calc>=max){
-    system("color 04");
-	printf("\nPrilis dlouhe!\n");
+	printf(RED"\nPrilis dlouhe!\n"RESET);
 	system("pause");
 	return 1;}
 
 if(calc<2){
-    system("color 04");
-	printf("\nPrilis kratke!\n");
+	printf(RED"\nPrilis kratke!\n"RESET);
     system("pause");
 	return 1;
 }
@@ -183,7 +185,6 @@ int vyhledat(Thraci h[], int n, int druh)
                 do{
                     do{
                         system("cls");
-                        system("color 07");
                         printf("Zbyva %d hracu\n",count);
                         if(druh ==0){
                             printf("Podle jakych parametru chces vyhledat hrace:\n");
@@ -196,7 +197,7 @@ int vyhledat(Thraci h[], int n, int druh)
                         printf("\t3 - Podle roku narozeni\n");
                         printf("\t4 - Podle FIDE ID\n");
                         printf("\t5 - Vypis hrace\n");
-                        printf("\t0 - Domu, do Prahy...\n");
+                        printf(RED"\t0 - Domu, do Prahy...\n"RESET);
                         fflush(stdin);
                         volba = getch();
                         }while(volba>53||volba<48);
@@ -218,7 +219,6 @@ int vyhledat(Thraci h[], int n, int druh)
                                 char jmeno[20];
                                 do{
                                     system("cls");
-                                    system("color 07");
                                     printf("Zadej jmeno hrace:");
                                     scanf("%19s",jmeno);
                                     fflush(stdin);
@@ -243,7 +243,6 @@ int vyhledat(Thraci h[], int n, int druh)
                                 char prijmeni[20];
                                 do{
                                     system("cls");
-                                    system("color 07");
                                     printf("Zadej prijmeni hrace:");
                                     scanf("%19s",prijmeni);
                                     fflush(stdin);
@@ -267,13 +266,11 @@ int vyhledat(Thraci h[], int n, int druh)
                                 int rok;
                                 do{
                                     system("cls");
-                                    system("color 07");
                                     printf("Zadej rok narozeni hrace (2015-2025) nebo 0:\n");
                                     scanf("%d",&rok);
                                     if(rok==0){volba=53;break;}
                                     if(narozeni(rok)){
-                                        printf("mimo rozsah\n");
-                                        system("color 04");
+                                        printf(RED"mimo rozsah\n"RESET);
                                         system("pause");
                                     }
                                 }while(narozeni(rok));
@@ -294,14 +291,12 @@ int vyhledat(Thraci h[], int n, int druh)
 
                 do{
                     system("cls");
-                    system("color 07");
                     printf("Zadej FIDE ID hrace, nebo 0\n");
                     scanf("%d",&key);
                     if(key ==0){volba = 53;break;}
 
                 if(key<1000000||key>99999999){
-                    system("color 04");
-                    printf("Mimo rozsah\n");
+                    printf(RED"Mimo rozsah\n"RESET);
                     system("pause");
                 }
                 }while(key<1000000||key>99999999);
@@ -315,8 +310,7 @@ int vyhledat(Thraci h[], int n, int druh)
 
                         }
                 if(count == 0 && volba!=53){
-                    system("color 04");
-                    printf("Nikdo nenalezen\n");
+                    printf(RED"Nikdo nenalezen\n"RESET);
                     count = countCheck;
                     for(int i=0;i<n;i++){
                         if(h[i].smazano==2){
@@ -347,7 +341,6 @@ Thraci Zmenatitul(int moznost, Thraci h, char nazev[]){
         int volba;
         do{
         system("cls");
-        system("color 08");
         if(moznost ==1){
         vypisJedna(h);
         printf("\t Uprava titulu hrace\n");
@@ -404,8 +397,7 @@ Thraci Zmenatitul(int moznost, Thraci h, char nazev[]){
         strcpy(h.titul,"WNM");
         break;
     default:
-        system("color 04");
-        printf("mimo rozsah\n");
+        printf(RED"mimo rozsah\n"RESET);
         system("pause");
         break;}
         }while(volba<47 || volba>57);
@@ -416,7 +408,6 @@ return h;
 Thraci Zmenajmeno(int moznost, Thraci h, char nazev[]){
 do{
         system("cls");
-        system("color 08");
          if(moznost ==1){
         vypisJedna(h);
         printf("\t Uprava jmena hrace\n");
@@ -437,7 +428,6 @@ do{
 Thraci Zmenaprijmeni(int moznost, Thraci h, char nazev[]){
 do{
         system("cls");
-        system("color 08");
          if(moznost ==1){
         vypisJedna(h);
         printf("\t Uprava prijmeni hrace\n");
@@ -459,7 +449,6 @@ do{
 Thraci Zmenaelo(int moznost, Thraci h, char nazev[]){
 do{
         system("cls");
-        system("color 08");
         if(moznost ==1){
         vypisJedna(h);
         printf("\t Uprava ela hrace\n");
@@ -469,8 +458,7 @@ do{
         printf("%-11s",nazev);
         scanf("%d",&h.elo);
         if(h.elo<1000 || h.elo>3000){
-            system("color 04");
-            printf("mimo rozsah\n");
+            printf(RED"mimo rozsah\n"RESET);
             system("pause");
     }
 
@@ -486,7 +474,6 @@ do{
 Thraci Zmenamaxelo(int moznost, Thraci h, char nazev[]){
         do{
         system("cls");
-        system("color 08");
         if(moznost ==1){
         vypisJedna(h);
         printf("\t Uprava maximalniho ela hrace\n");
@@ -496,8 +483,7 @@ Thraci Zmenamaxelo(int moznost, Thraci h, char nazev[]){
         printf("%-11s",nazev);
         scanf("%d",&h.maxelo);
         if(h.maxelo<h.elo || h.maxelo>3000){
-            system("color 04");
-            printf("mimo rozsah\n");
+            printf(RED"mimo rozsah\n"RESET);
             system("pause");
     }
 
@@ -512,7 +498,6 @@ Thraci Zmenamaxelo(int moznost, Thraci h, char nazev[]){
 Thraci Zmenanarodnosti(int moznost, Thraci h, char nazev[]){
 do{
         system("cls");
-        system("color 08");
         if(moznost ==1){
         vypisJedna(h);
         printf("\t Uprava narodnosti hrace\n");
@@ -534,7 +519,6 @@ do{
 Thraci Zmenaroknarozeni(int moznost, Thraci h, char nazev[]){
 do{
         system("cls");
-        system("color 08");
         if(moznost ==1){
         vypisJedna(h);
         printf("\t Uprava roku narozeni hrace\n");
@@ -544,8 +528,7 @@ do{
         printf("%-11s",nazev);
         scanf("%d",&h.rokNarozeni);
         if(narozeni(h.rokNarozeni)){
-            system("color 04");
-            printf("mimo rozsah\n");
+            printf(RED"mimo rozsah\n"RESET);
             system("pause");
     }
 
@@ -557,7 +540,6 @@ do{
 Thraci Zmenafide(int moznost, Thraci player, char nazev[], Thraci p[],int n){
 do{
         system("cls");
-        system("color 08");
         if(moznost ==1){
         vypisJedna(player);
         printf("\t Uprava FIDE ID hrace\n");
@@ -569,15 +551,13 @@ do{
         scanf("%d",&player.fideID);
         for(int i=0;i<n;i++){
             if(player.fideID==p[i].fideID){
-                system("color 04");
-            printf("obsazeno\n");
+            printf(RED"obsazeno\n"RESET);
             player.fideID=ERR;
             system("pause");
             }
         }
         if(player.fideID<1000000 || player.fideID>99999999){
-            system("color 04");
-            printf("mimo rozsah\n");
+            printf(RED"mimo rozsah\n"RESET);
             system("pause");
     }
     }while(player.fideID<1000000 || player.fideID>99999999);
@@ -599,8 +579,7 @@ int upravitMenu(int n, Thraci h[]){
     do{
     do{
     system("cls");
-    system("color 07");
-    printf("Co chces upravit:\n");
+    printf(GREEN"Co chces upravit:\n"RESET);
     printf("\t/ - FIDE ID\n");
     printf("\t1 - Titul\n");
     printf("\t2 - Jmeno\n");
@@ -609,9 +588,9 @@ int upravitMenu(int n, Thraci h[]){
     printf("\t5 - Max elo\n");
     printf("\t6 - Narodnost\n");
     printf("\t7 - Rok narozeni\n");
-    printf("\t8 - Smazat\n\n");
-    printf("\t9 - Zrusit\n");
-    printf("\t0 - Ulozit...\n");
+    printf(RED"\t8 - Smazat\n\n"RESET);
+    printf(MAGENTA"\t9 - Zrusit\n"RESET);
+    printf(GREEN"\t0 - Ulozit...\n"RESET);
     fflush(stdin);
     volba = getch();
     }while(volba>57||volba<47);
@@ -626,7 +605,7 @@ int upravitMenu(int n, Thraci h[]){
         break;}
     case 56:{
         system("cls");
-        printf("Jste si jisty [y/n]?");
+        printf(YELLOW"Jste si jisty [y/n]?"RESET);
         int potvrzeni;
         fflush(stdin);
         potvrzeni=getch();
@@ -698,40 +677,73 @@ return n;
 }
 
 
+
+void zapisheslo(char heslo[], int moznost){
+int i=0;
+        while (1) {
+        char ch = getch();
+
+        if (ch == 13) { //enter
+            //heslo[i] = '\0';
+            break;
+        } else if (ch == 8) {  //backspace
+            if (i > 0) {
+                i--;
+                printf("\b \b"); //zpet nahrad mezera zpet
+                heslo[i]='\0';
+            }
+        } else if (ch == 27){
+            for(int y=0; y<i;y++){
+                printf("\b");
+            }
+            printf("%-19s\n",heslo);
+            system("pause");
+            system("cls");
+            if(moznost==0)
+                printf("Zadej heslo, nebo 0 k vraceni zpet:");
+            if(moznost==1)
+                printf("Zadej nove heslo o max. delce 19: ");
+            if(moznost==2)
+                printf("\nZadej heslo znovu: ");
+
+            for(int y=0; y<i;y++){
+                printf("*");
+            }
+        }
+         else if(i<19){
+            heslo[i++] = ch;
+            heslo[i]='\0';
+            printf("*");
+        }
+    }
+}
+
 int login(FILE *p)
 {
      uint64_t password;
-    char heslo[20];
+    char heslo[25];
     system("cls");
     if(fscanf(p,"%"SCNu64,&password)==1){
             do{
-        system("color 07");
         system("cls");
-        printf("Zadej heslo, nebo 0 k vraceni zpet\n");
-        scanf("%19s",heslo);
-        fflush(stdin);
-        //printf("%s",heslo);
+        printf("Zadej heslo, nebo 0 k vraceni zpet:");
+        zapisheslo(heslo,0);
         if(strcmp(heslo,"0")==0){
-            //printf("exiting");
-            //system("timeout /t 2");
             return 0;
             }
             //printf("%" PRIu64,hash(heslo));
             //system("pause");
         if(hash(heslo)==password){
-            printf("Heslo uspesne zadano");
             return 1;
         }else{
             system("cls");
-            system("color 04");
-            printf("Spatne heslo\n");
+            printf(RED"Spatne heslo\n"RESET);
             system("pause");
             //return 0;
         }
     }while(1);
     }
-    system("color 04");
-    printf("Error");
+    printf(RED"Error"RESET);
     system("pause");
     return 0;
 
@@ -739,15 +751,15 @@ int login(FILE *p)
 }
 
 int adminset(){
-    system("color 07");
+    //system("color 07");
     char volba;
     do{
         system("cls");
-        printf("\t BIOS\n");
+        printf(BLACK"\e[47m\tBIOS\n"RESET);
         printf("1 - Zmena hesla\n");
-        printf("2 - Odhlasit\n");
+        printf(MAGENTA"2 - Odhlasit\n"RESET);
         printf("3 - Comming soon\n");
-        printf("0 - Exit\n");
+        printf(RED"0 - Exit\n"RESET);
         volba = getch();
         fflush(stdin);
     }while(volba<48 || volba>51);
@@ -756,25 +768,24 @@ int adminset(){
 }
 
 int changepass(char nove[]){
-    char heslo[20];
-    char kontrola[20];
+    char heslo[25];
+    char kontrola[25];
     system("cls");
-    printf("Zadej nove heslo: ");
-    scanf("%19s",heslo);
+    printf("Zadej nove heslo o max. delce 19: ");
+    zapisheslo(heslo,1);
     fflush(stdin);
-    printf("\nZadej heslo znovu: ");
-    scanf("%19s",kontrola);
+    system("cls");
+    printf("Zadej heslo znovu: ");
+    zapisheslo(kontrola,2);
     fflush(stdin);
     if(strcmp(kontrola,heslo)==0){
         system("cls");
         strcpy(nove,heslo);
-        system("color 0A");
-        printf("heslo zmeneno!\n");
+        printf(GREEN"heslo zmeneno!\n"RESET);
         system("pause");
         return 1;
         }
-        system("color 04");
-        printf("hesla se neshoduji!\n");
+        printf(RED"\nhesla se neshoduji!\n"RESET);
         system("pause");
         return 0;
 
@@ -800,8 +811,7 @@ return player;
 void pridavani(int x, char nazev[][20], Thraci player, Thraci p[],int n)
 {
     system("cls");
-        system("color 08");
-        printf("\t Pridani noveho hrace\n");
+        printf(GREEN"\t Pridani noveho hrace\n"RESET);
         if(x>0)
         printf("0 - %-10s %d\n",nazev[0],player.fideID);
         if(x>1)
@@ -944,9 +954,8 @@ void seradMV(Thraci h[],int n){
 
 void aboutUs(){
     system("cls");
-    system("color 07");
     char informace[2][5][50] = {{"Autor:","Trida:","Zdroj:","Dokument:","Vyrobil:"},{"Patrik Nadvornik","4.G","https://github.com/Patrik070/projektheslo.git","dlkjf","Patrik Nadvornik 2025"}};
-    printf("\t\tAbout me\n");
+    printf(CYAN"\t\tAbout me\n"RESET);
     printf("%-10s%s\n",informace[0][0],informace[1][0]);
     printf("%-10s%s\n",informace[0][1],informace[1][1]);
     printf("%-10s%s\n",informace[0][2],informace[1][2]);
@@ -971,7 +980,6 @@ int soucet=0;
 int maxPoz = 0;
 char informace[5][50] = {"pocet hracu jest:","prumerne elo jest:","nejvyssi elo jest:","nejvyssi elo ma:","median ela jest:"};
     system("cls");
-    system("color 07");
     printf("%-20s%d\n",informace[0],n);
     for(int i=0;i<n;i++){
         soucet+=h[i].elo;
@@ -998,8 +1006,7 @@ int main(){
     //system("pause");
     FILE *in = fopen("hraci.txt","r");
     if(in == NULL){
-        system("color 04");
-        printf("Error 404: File hraci.txt not found :(");
+        printf(RED"Error 404: File hraci.txt not found :("RESET);
         system("timeout /t 1");
         return -3;
         }
@@ -1015,20 +1022,18 @@ int main(){
     volba = menu(admin);
     if(n<1 && volba !=0){
             system("cls");
-            system("color 04");
-        printf("nedostatek hracu, nektere funkce nemusi fungovat spravne!!!\n");
+        printf(RED"nedostatek hracu, nektere funkce nemusi fungovat spravne!!!\n"RESET);
         if(admin==1){
-            printf("pridat hrace? [y/n]\n");
+            printf(RED"pridat hrace? [y/n]\n"RESET);
             int nedostatekHracu = getch();
             if(nedostatekHracu=='y')
                 volba = 54;
         }else {
-            printf("Prihlate se prosim a zmente tuto nemilou skutecnost!\n");
+            printf(RED"Prihlate se prosim a zmente tuto nemilou skutecnost!\n"RESET);
         volba=53;
         system("pause");
 
         }
-        system("color 07");
     }
    /* printf("OK");
     system("pause");*/
@@ -1073,7 +1078,7 @@ int main(){
             switch(vol){
                 case 50:
                     admin = 0;
-                    printf("Jsi odhlasen\n");
+                    printf(GREEN"Jsi odhlasen\n"RESET);
                     vol = ERR;
                     system("pause");
                     break;
@@ -1082,8 +1087,7 @@ int main(){
                         FILE *password = fopen("heslo.txt","r");
                         if(password == NULL){
                             system("cls");
-                            system("color 04");
-                            printf("Error 404: File heslo.txt not found :(\n");
+                            printf(RED"Error 404: File heslo.txt not found :(\n"RESET);
                             system("pause");
                             break;
                         }
@@ -1095,8 +1099,7 @@ int main(){
                             password = fopen("heslo.txt","w");
                             if(password == NULL){
                                 system("cls");
-                                system("color 04");
-                                printf("Error 404: File heslo.txt not found :(\n");
+                                printf(RED"Error 404: File heslo.txt not found :(\n"RESET);
                                 system("pause");
                                 break;
                             }
@@ -1111,8 +1114,7 @@ int main(){
             FILE *password = fopen("heslo.txt","r");
             if(password == NULL){
                 system("cls");
-                system("color 04");
-                printf("Error 404: File heslo.txt not found :(\n");
+                printf(RED"Error 404: File heslo.txt not found :(\n"RESET);
                 system("pause");
                 break;
             }
@@ -1127,8 +1129,7 @@ int main(){
            player[n] = pridat(player,n);
            in = fopen("hraci.txt","a");
             if(in == NULL){
-                system("color 04");
-                printf("Error 404: File hraci.txt not found :(");
+                printf(RED"Error 404: File hraci.txt not found :("RESET);
                 system("timeout /t 1");
                 return -3;
             }
@@ -1144,8 +1145,7 @@ int main(){
 
             FILE *in = fopen("hraci.txt","r");
             if(in == NULL){
-                system("color 04");
-                printf("Error 404: File hraci.txt not found :(");
+                printf(RED"Error 404: File hraci.txt not found :("RESET);
                 system("timeout /t 1");
                 return -3;
                 }
@@ -1163,7 +1163,7 @@ int main(){
 
         case 57:
             system("cls");
-            printf("Tato moznost propise neulozene zmeny v uprava! Chcete to provest? [y/n]\n");
+            printf(MAGENTA"Tato moznost propise neulozene zmeny v uprava! Chcete to provest? [y/n]\n"RESET);
             moznostSwitch=getch();
             if(moznostSwitch=='y'){
             if(zapis(player,n)==-3){
