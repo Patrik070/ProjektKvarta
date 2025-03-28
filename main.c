@@ -35,14 +35,14 @@ typedef struct{//definice struktury
 int narozeni(int rok){//kontrola platnosti zadaneho narozeni pro while cyklus
 
 if(rok<1500 || rok > 2025){
-    return 1;
+    return 1;//pokracuj v cyklu
 }
-return 0;
+return 0;//ukonci cyklus
 }
 
 
 void vypsat(Thraci p[], int n){//vypisovani na terminal
-    system("cls");
+    printf("\e[2J\e[H");
     printf(GREEN"\t\t\t\t\tTabulka hracu\n"RESET);
     char nazev[8][20]={"FIDE ID","Titul","Jmeno","Prijmeni","Elo","Max Elo","Narod","Narozeni"};
     printf(CYAN" %-7s %-5s %-19s %-21s %-9s %-7s %-6s %-6s\n"RESET,nazev[0],nazev[1],nazev[2],nazev[3],nazev[4],nazev[5],nazev[6],nazev[7]);
@@ -63,7 +63,7 @@ void vypsat(Thraci p[], int n){//vypisovani na terminal
 
 }
 
-int zapis(Thraci player[], int n){
+int zapsaniDoSouboru(Thraci player[], int n){
    FILE *in = fopen("hraci.txt","w");
             if(in == NULL){
                 printf(RED"Error 404: File hraci.txt not found :("RESET);
@@ -83,7 +83,7 @@ return 1;
 
 void vypisJedna(Thraci player){
 char nazev[8][20]={"FIDE ID","Titul","Jmeno","Prijmeni","Elo","Max Elo","Narod","Narozeni"};
-system("cls");
+printf("\e[2J\e[H");
         printf(CYAN"\t Profil hrace\n"RESET);
         printf("%-10s %d\n",nazev[0],player.fideID);
         printf("%-10s %-5s\n",nazev[1],player.titul);
@@ -107,17 +107,17 @@ int nacti(FILE *in, Thraci p[]){
 int menu(int admin){
     char volba;
     do{
-        system("cls");
+        printf("\e[2J\e[H");
         printf("\e[1;92m""\t Hlavni menu\n"RESET);
         printf("1 - Vypsat\n");
         printf("2 - Vyhledat\n");
         printf("3 - Zobraz info\n");
         printf("4 - Seradit hrace\n");
         if(admin==0){
-        printf("5 - sudo su\n");
+        printf("5 - Sudo su\n");
         }else{
         printf(MAGENTA"Root nastaveni:\n"RESET);
-        printf("\t5 - nastaveni\n");
+        printf("\t5 - Nastaveni\n");
         printf("\t6 - Pridat\n");
         printf("\t7 - Upravit\n");
         printf("\t8 - About me\n");
@@ -127,7 +127,7 @@ int menu(int admin){
         fflush(stdin);
         volba = getch();
     if(admin==0 && volba>53){
-        volba = ERR-1;
+        volba = ERR-1;//nastavi neplatnou hodnotu
     }
     }while(volba<48 || volba>57);
     return volba;
@@ -178,9 +178,9 @@ return 0;
 int vyhledat(Thraci h[], int n, int druh)
 {
     if(n==1){
-            printf(GREEN"Mas jednoho hrace, ti to ulehcim :)\n"RESET);
+            printf(GREEN"V databazi se nachazi jen 1 hrac\n"RESET);
     getch();
-        return 0;
+        return 0;//vrat hrace
     }
     char volba;
     int x;
@@ -188,7 +188,7 @@ int vyhledat(Thraci h[], int n, int druh)
                 int countCheck=count;
                 do{
                     do{
-                        system("cls");
+                        printf("\e[2J\e[H");
                         printf("Zbyva "CYAN"%d"RESET" hracu\n",count);
                         if(druh ==0){
                             printf("Podle jakych parametru chces vyhledat hrace:\n");
@@ -226,7 +226,7 @@ int vyhledat(Thraci h[], int n, int druh)
                             {
                                 char jmeno[20];
 
-                                    system("cls");
+                                    printf("\e[2J\e[H");
                                     printf("Zadej jmeno hrace:");
                                     scanf("%19s",jmeno);
                                     fflush(stdin);
@@ -249,7 +249,7 @@ int vyhledat(Thraci h[], int n, int druh)
                         case 50:
                             {
                                 char prijmeni[20];
-                                    system("cls");
+                                    printf("\e[2J\e[H");
                                     printf("Zadej prijmeni hrace:");
                                     scanf("%19s",prijmeni);
                                     fflush(stdin);
@@ -271,7 +271,7 @@ int vyhledat(Thraci h[], int n, int druh)
                             {
                                 int rok;
                                 do{
-                                    system("cls");
+                                    printf("\e[2J\e[H");
                                     printf("Zadej rok narozeni hrace (1500-2025) nebo 0:\n");
                                     scanf("%d",&rok);
                                     if(rok==0){volba=53;break;}
@@ -296,7 +296,7 @@ int vyhledat(Thraci h[], int n, int druh)
                 int key;
 
                 do{
-                    system("cls");
+                    printf("\e[2J\e[H");
                     printf("Zadej FIDE ID hrace, nebo 0\n");
                     scanf("%d",&key);
                     if(key ==0){volba = 53;break;}
@@ -346,7 +346,7 @@ int vyhledat(Thraci h[], int n, int druh)
 Thraci Zmenatitul(int moznost, Thraci h, char nazev[]){
         int volba;
         do{
-        system("cls");
+        printf("\e[2J\e[H");
         if(moznost ==1){
         vypisJedna(h);
         printf("\t Uprava titulu hrace\n");
@@ -413,7 +413,7 @@ return h;
 
 Thraci Zmenajmeno(int moznost, Thraci h, char nazev[]){
 do{
-        system("cls");
+        printf("\e[2J\e[H");
          if(moznost ==1){
         vypisJedna(h);
         printf("\t Uprava jmena hrace\n");
@@ -433,7 +433,7 @@ do{
 
 Thraci Zmenaprijmeni(int moznost, Thraci h, char nazev[]){
 do{
-        system("cls");
+        printf("\e[2J\e[H");
          if(moznost ==1){
         vypisJedna(h);
         printf("\t Uprava prijmeni hrace\n");
@@ -454,7 +454,7 @@ do{
 
 Thraci Zmenaelo(int moznost, Thraci h, char nazev[]){
 do{
-        system("cls");
+        printf("\e[2J\e[H");
         if(moznost ==1){
         vypisJedna(h);
         printf("\t Uprava ela hrace\n");
@@ -479,7 +479,7 @@ do{
 
 Thraci Zmenamaxelo(int moznost, Thraci h, char nazev[]){
         do{
-        system("cls");
+        printf("\e[2J\e[H");
         if(moznost ==1){
         vypisJedna(h);
         printf("\t Uprava maximalniho ela hrace\n");
@@ -503,7 +503,7 @@ Thraci Zmenamaxelo(int moznost, Thraci h, char nazev[]){
 
 Thraci Zmenanarodnosti(int moznost, Thraci h, char nazev[]){
 do{
-        system("cls");
+        printf("\e[2J\e[H");
         if(moznost ==1){
         vypisJedna(h);
         printf("\t Uprava narodnosti hrace\n");
@@ -524,7 +524,7 @@ do{
 
 Thraci Zmenaroknarozeni(int moznost, Thraci h, char nazev[]){
 do{
-        system("cls");
+        printf("\e[2J\e[H");
         if(moznost ==1){
         vypisJedna(h);
         printf("\t Uprava roku narozeni hrace\n");
@@ -545,7 +545,7 @@ do{
 
 Thraci Zmenafide(int moznost, Thraci player, char nazev[], Thraci p[],int n){
 do{
-        system("cls");
+        printf("\e[2J\e[H");
         if(moznost ==1){
         vypisJedna(player);
         printf("\t Uprava FIDE ID hrace\n");
@@ -580,11 +580,11 @@ int upravitMenu(int n, Thraci h[]){
         return n;
     }
     char nazev[8][20]={"FIDE ID","Titul","Jmeno","Prijmeni","Elo","Max Elo","Narod","Narozeni"};
-    system("cls");
+    printf("\e[2J\e[H");
     //vypisJedna(h[x]);
     do{
     do{
-    system("cls");
+    printf("\e[2J\e[H");
     printf(GREEN"Co chces upravit:\n"RESET);
     printf("\t/ - FIDE ID\n");
     printf("\t1 - Titul\n");
@@ -604,22 +604,23 @@ int upravitMenu(int n, Thraci h[]){
     switch(volba)
     {
     case 48:{
-        if(zapis(h,n)==-3){
+        if(zapsaniDoSouboru(h,n)==-3){
             return -3;
         }
         return n;
         break;}
     case 56:{
-        system("cls");
+        printf("\e[2J\e[H");
         printf(YELLOW"Jste si jisty [y/n]?"RESET);
         int potvrzeni;
         fflush(stdin);
         potvrzeni=getch();
         if(potvrzeni=='y'){
             h[x].smazano=1;
-            if(zapis(h,n)==-3){
+            if(zapsaniDoSouboru(h,n)==-3){
             return -3;
         }
+            //nacti(h,n);
             return n-1;
         }
         break;}
@@ -663,7 +664,7 @@ int upravitMenu(int n, Thraci h[]){
         h[x]=Zmenafide(1,h[x],nazev[0],h,n);
 
     }}while(volba!=0);
-    if(zapis(h,n)==-3){
+    if(zapsaniDoSouboru(h,n)==-3){
             return -3;
         }//pro jistotu
 return n;
@@ -684,33 +685,35 @@ return n;
 
 
 
-void zapisheslo(char heslo[], int moznost){
+void zapsaniDoSouboruheslo(char heslo[], int moznost){
 int i=0;
+heslo[0] = '\0';
         while (1) {
         char ch = getch();
 
+
         if (ch == 13) { //enter
             //heslo[i] = '\0';
-            break;
-        } else if (ch == 8) {  //backspace
+            break;}
+        else if (ch == 8) {  //backspace
             if (i > 0) {
                 i--;
                 printf("\b \b"); //zpet nahrad mezera zpet
                 heslo[i]='\0';
             }
-        } else if (ch == 27){
+        } else if (ch == 27){//ESC
             for(int y=0; y<i;y++){
                 printf("\b");
             }
             printf("%-19s\n",heslo);
             getch();
-            system("cls");
+            printf("\e[2J\e[H");
             if(moznost==0)
-                printf("Zadej heslo, nebo 0 k vraceni zpet:");
+                printf("Zadej heslo, nebo 0 k vraceni zpet, nebo ESC k zobrazeni hesla: ");
             if(moznost==1)
                 printf("Zadej nove heslo o max. delce 19: ");
             if(moznost==2)
-                printf("\nZadej heslo znovu: ");
+                printf("Zadej heslo znovu: ");
 
             for(int y=0; y<i;y++){
                 printf("*");
@@ -728,12 +731,12 @@ int login(FILE *p)
 {
      uint64_t password;
     char heslo[25];
-    system("cls");
+    printf("\e[2J\e[H");
     if(fscanf(p,"%"SCNu64,&password)==1){
             do{
-        system("cls");
-        printf("Zadej heslo, nebo 0 k vraceni zpet:");
-        zapisheslo(heslo,0);
+        printf("\e[2J\e[H");
+        printf("Zadej heslo, nebo 0 k vraceni zpet, nebo ESC k zobrazeni hesla: ");
+        zapsaniDoSouboruheslo(heslo,0);
         if(strcmp(heslo,"0")==0){
             return 0;
             }
@@ -742,7 +745,7 @@ int login(FILE *p)
         if(hash(heslo)==password){
             return 1;
         }else{
-            system("cls");
+            printf("\e[2J\e[H");
             printf(RED"Spatne heslo\n"RESET);
             getch();
             //return 0;
@@ -760,7 +763,7 @@ int adminset(){
     //system("color 07");
     char volba;
     do{
-        system("cls");
+        printf("\e[2J\e[H");
         printf(BLACK"\e[47m\tBIOS\n"RESET);
         printf("1 - Zmena hesla\n");
         printf(MAGENTA"2 - Odhlasit\n"RESET);
@@ -776,16 +779,16 @@ int adminset(){
 int changepass(char nove[]){
     char heslo[25];
     char kontrola[25];
-    system("cls");
+    printf("\e[2J\e[H");
     printf("Zadej nove heslo o max. delce 19: ");
-    zapisheslo(heslo,1);
+    zapsaniDoSouboruheslo(heslo,1);
     fflush(stdin);
-    system("cls");
+    printf("\e[2J\e[H");
     printf("Zadej heslo znovu: ");
-    zapisheslo(kontrola,2);
+    zapsaniDoSouboruheslo(kontrola,2);
     fflush(stdin);
     if(strcmp(kontrola,heslo)==0){
-        system("cls");
+        printf("\e[2J\e[H");
         strcpy(nove,heslo);
         printf(GREEN"heslo zmeneno!\n"RESET);
         getch();
@@ -816,7 +819,7 @@ return player;
 
 void pridavani(int x, char nazev[][20], Thraci player, Thraci p[],int n)
 {
-    system("cls");
+    printf("\e[2J\e[H");
         printf(GREEN"\t Pridani noveho hrace\n"RESET);
         if(x>0)
         printf("0 - %-10s %d\n",nazev[0],player.fideID);
@@ -984,8 +987,8 @@ void seradF(Thraci h[],int n){
 
 
 void aboutUs(){
-    system("cls");
-    char informace[2][5][50] = {{"Autor:","Trida:","GitHub:","nvm:","Vyrobil:"},{"Patrik Nadvornik","4.G","","Patrik Nadvornik 2025"}};
+    printf("\e[2J\e[H");
+    char informace[2][5][50] = {{"Autor:","Trida:","GitHub:","nvm:","Vyrobil:"},{"Patrik Nadvornik","4.G","https://github.com/Patrik070/projektheslo.git","","Patrik Nadvornik 2025"}};
     printf(CYAN"\t\tAbout me\n"RESET);
     printf("%-10s%s\n",informace[0][0],informace[1][0]);
     printf("%-10s%s\n",informace[0][1],informace[1][1]);
@@ -1009,7 +1012,7 @@ void ISprogram(Thraci h[],int n){
 int soucet=0;
 int maxPoz = 0;
 char informace[5][50] = {"pocet hracu jest:","prumerne elo jest:","nejvyssi elo jest:","nejvyssi elo ma:","median ela jest:"};
-    system("cls");
+    printf("\e[2J\e[H");
     printf(GREEN"\tStats for nerds\n"RESET);
     printf("%-20s%d\n",informace[0],n);
     for(int i=0;i<n;i++){
@@ -1052,7 +1055,7 @@ int main(){
     do{
     volba = menu(admin);
     if(n<1 && volba !=0){
-            system("cls");
+            printf("\e[2J\e[H");
         printf(RED"nedostatek hracu, nektere funkce nemusi fungovat spravne!!!\n"RESET);
         if(admin==1){
             printf(RED"pridat hrace? [y/n]\n"RESET);
@@ -1084,7 +1087,7 @@ int main(){
         break;
     case 52:
         do{
-        system("cls");
+        printf("\e[2J\e[H");
         printf("Podle ceho seradit?\n\t1 - Elo sestupne\n\t2 - Elo vzestupne\n\t3 - FIDE ID\n\t0 - neradit");
         moznostSwitch=getch();
         }while(moznostSwitch<48 || moznostSwitch>51);
@@ -1108,7 +1111,7 @@ int main(){
             int vol;
             do{
             vol = adminset();
-            system("cls");
+            printf("\e[2J\e[H");
             switch(vol){
                 case 50:
                     admin = 0;
@@ -1120,7 +1123,7 @@ int main(){
                     {
                         FILE *password = fopen("heslo.txt","r");
                         if(password == NULL){
-                            system("cls");
+                            printf("\e[2J\e[H");
                             printf(RED"Error 404: File heslo.txt not found :(\n"RESET);
                             getch();
                             break;
@@ -1132,7 +1135,7 @@ int main(){
 
                             password = fopen("heslo.txt","w");
                             if(password == NULL){
-                                system("cls");
+                                printf("\e[2J\e[H");
                                 printf(RED"Error 404: File heslo.txt not found :(\n"RESET);
                                 getch();
                                 break;
@@ -1147,12 +1150,12 @@ int main(){
         } else {
             FILE *password = fopen("heslo.txt","r");
             if(password == NULL){
-                system("cls");
+                printf("\e[2J\e[H");
                 printf(RED"Error 404: File heslo.txt not found :(\n"RESET);
                 getch();
                 break;
             }
-            system("cls");
+            printf("\e[2J\e[H");
             printf("We trust you have received the usual lecture from the local System\nAdministrator. It usually boils down to these three things:\n\n\t#1) Respect the privacy of others.\n\t#2) Think before you type.\n\t#3) With great power comes great responsibility\n");
             getch();
             admin = login(password);
@@ -1196,11 +1199,11 @@ int main(){
             break;
 
         case 57:
-            system("cls");
+            printf("\e[2J\e[H");
             printf(MAGENTA"Tato moznost propise neulozene zmeny v uprava! Chcete to provest? [y/n]\n"RESET);
             moznostSwitch=getch();
             if(moznostSwitch=='y'){
-            if(zapis(player,n)==-3){
+            if(zapsaniDoSouboru(player,n)==-3){
                 return -3;}
                 printf("provedeno\n");
                 getch();}
