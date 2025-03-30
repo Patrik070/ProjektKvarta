@@ -34,10 +34,10 @@ typedef struct{//definice struktury
 
 int narozeni(int rok){//kontrola platnosti zadaneho narozeni pro while cyklus
 
-if(rok<1500 || rok > 2025){
-    return 1;//pokracuj v cyklu
-}
-return 0;//ukonci cyklus
+    if(rok<1500 || rok > 2025){
+        return 1;//pokracuj v cyklu
+    }
+    return 0;//ukonci cyklus
 }
 
 
@@ -50,11 +50,11 @@ void vypsat(Thraci p[], int n){//vypisovani na terminal
         if(p[i].smazano == 0){
             printf("%8d",p[i].fideID);
             if(strcmp(p[i].titul,"None")==0){
-            printf("       ");
-        }else
-        {
-            printf(" %-6s",p[i].titul);
-        }
+                printf("       ");
+            }else
+            {
+                printf(" %-6s",p[i].titul);
+            }
 
             printf("%-19s %-19s %6d %9d    %-4s %6d\n",p[i].jmeno, p[i].prijmeni, p[i].elo, p[i].maxelo, p[i].nation, p[i].rokNarozeni);
 
@@ -93,7 +93,7 @@ printf("\e[2J\e[H");
         printf("%-10s %d\n",nazev[5],player.maxelo);
         printf("%-10s %-5s\n",nazev[6],player.nation);
         printf("%-10s %d\n",nazev[7],player.rokNarozeni);
-        getch();
+        //getch();
 
 }
 int nacti(FILE *in, Thraci p[]){
@@ -412,6 +412,8 @@ return h;
 
 
 Thraci Zmenajmeno(int moznost, Thraci h, char nazev[]){
+            char jmeno[20];
+
 do{
         printf("\e[2J\e[H");
          if(moznost ==1){
@@ -421,10 +423,11 @@ do{
         printf("\t Nastaveni jmena hrace\n");}
         printf("%-11s",nazev);
         fflush(stdin);
-        scanf("%19s",h.jmeno);
+        scanf("%19s",jmeno);
         fflush(stdin);
 
-    }while(validace(h.jmeno,19));
+    }while(validace(jmeno,19));
+    strcpy(h.jmeno,jmeno);
     strlwr(h.jmeno);
     h.jmeno[0]=toupper(h.jmeno[0]);
     return h;
@@ -432,6 +435,7 @@ do{
 }
 
 Thraci Zmenaprijmeni(int moznost, Thraci h, char nazev[]){
+    char prijmeni[20];
 do{
         printf("\e[2J\e[H");
          if(moznost ==1){
@@ -441,10 +445,11 @@ do{
         printf("\t Nastaveni prijmeni hrace\n");}
         printf("%-11s",nazev);
         fflush(stdin);
-        scanf("%19s",h.prijmeni);
+        scanf("%19s",prijmeni);
         fflush(stdin);
 
-    }while(validace(h.prijmeni,19));
+    }while(validace(prijmeni,19));
+    strcpy(h.prijmeni,prijmeni);
     strlwr(h.prijmeni);
     h.prijmeni[0]=toupper(h.prijmeni[0]);
     return h;
@@ -453,6 +458,8 @@ do{
 
 
 Thraci Zmenaelo(int moznost, Thraci h, char nazev[]){
+            int elo;
+
 do{
         printf("\e[2J\e[H");
         if(moznost ==1){
@@ -462,13 +469,14 @@ do{
         printf("\t Nastaveni ela hrace\n");}
         printf("1000-3000\n");
         printf("%-11s",nazev);
-        scanf("%d",&h.elo);
-        if(h.elo<1000 || h.elo>3000){
+        scanf("%d",&elo);
+        if(elo<1000 || elo>3000){
             printf(RED"mimo rozsah\n"RESET);
             getch();
     }
 
-    }while(h.elo<1000 || h.elo>3000);
+    }while(elo<1000 || elo>3000);
+    h.elo = elo;
     if(h.elo>h.maxelo)
         h.maxelo=h.elo;
     return h;
@@ -478,6 +486,7 @@ do{
 
 
 Thraci Zmenamaxelo(int moznost, Thraci h, char nazev[]){
+    int maxelo;
         do{
         printf("\e[2J\e[H");
         if(moznost ==1){
@@ -487,13 +496,14 @@ Thraci Zmenamaxelo(int moznost, Thraci h, char nazev[]){
         printf("\t Nastaveni maximalniho ela hrace\n");}
         printf("%d-3000\n",h.elo);
         printf("%-11s",nazev);
-        scanf("%d",&h.maxelo);
-        if(h.maxelo<h.elo || h.maxelo>3000){
+        scanf("%d",&maxelo);
+        if(maxelo<h.elo || maxelo>3000){
             printf(RED"mimo rozsah\n"RESET);
             getch();
     }
 
-    }while(h.maxelo<h.elo || h.maxelo>3000);
+    }while(maxelo<h.elo || maxelo>3000);
+    h.maxelo=maxelo;
     return h;
 
 }
@@ -502,6 +512,7 @@ Thraci Zmenamaxelo(int moznost, Thraci h, char nazev[]){
 
 
 Thraci Zmenanarodnosti(int moznost, Thraci h, char nazev[]){
+    char nation[5];
 do{
         printf("\e[2J\e[H");
         if(moznost ==1){
@@ -511,10 +522,11 @@ do{
         printf("\t Nastaveni narodnosti hrace\n");}
         printf("%-11s",nazev);
         fflush(stdin);
-        scanf("%4s",h.nation);
+        scanf("%4s",nation);
         fflush(stdin);
 
-    }while(validace(h.nation,4));
+    }while(validace(nation,4));
+    strcpy(h.nation,nation);
     strupr(h.nation);
     return h;
 
@@ -523,6 +535,7 @@ do{
 
 
 Thraci Zmenaroknarozeni(int moznost, Thraci h, char nazev[]){
+    int rokNarozeni;
 do{
         printf("\e[2J\e[H");
         if(moznost ==1){
@@ -532,19 +545,23 @@ do{
         printf("\t Nastaveni roku narozeni hrace\n");}
         printf("1500-2025\n");
         printf("%-11s",nazev);
-        scanf("%d",&h.rokNarozeni);
-        if(narozeni(h.rokNarozeni)){
+        scanf("%d",&rokNarozeni);
+        if(narozeni(rokNarozeni)){
             printf(RED"mimo rozsah\n"RESET);
             getch();
     }
 
-    }while(narozeni(h.rokNarozeni));
+    }while(narozeni(rokNarozeni));
+    h.rokNarozeni=rokNarozeni;
     return h;
 
 }
 
 Thraci Zmenafide(int moznost, Thraci player, char nazev[], Thraci p[],int n){
+    int fideID;
+    bool error;
 do{
+        error = false;
         printf("\e[2J\e[H");
         if(moznost ==1){
         vypisJedna(player);
@@ -554,19 +571,22 @@ do{
         printf("1.000.000-99.999.999\n");
         printf("%-11s",nazev);
         //player.fideID=89745632;
-        scanf("%d",&player.fideID);
+        scanf("%d",&fideID);
         for(int i=0;i<n;i++){
-            if(player.fideID==p[i].fideID){
+            if(fideID==p[i].fideID){
             printf(RED"obsazeno\n"RESET);
-            player.fideID=ERR;
+            error = true;
             getch();
+            break;
             }
         }
-        if(player.fideID<1000000 || player.fideID>99999999){
+        if(fideID<1000000 || fideID>99999999){
             printf(RED"mimo rozsah\n"RESET);
+            error = true;
             getch();
     }
-    }while(player.fideID<1000000 || player.fideID>99999999);
+    }while(error);
+    player.fideID = fideID;
     return player;
 
 }
@@ -579,6 +599,9 @@ int upravitMenu(int n, Thraci h[]){
     if(x==-1){
         return n;
     }
+    Thraci upravovany = h[x];
+    vypisJedna(upravovany);
+    getch();
     char nazev[8][20]={"FIDE ID","Titul","Jmeno","Prijmeni","Elo","Max Elo","Narod","Narozeni"};
     printf("\e[2J\e[H");
     //vypisJedna(h[x]);
@@ -604,6 +627,7 @@ int upravitMenu(int n, Thraci h[]){
     switch(volba)
     {
     case 48:{
+        h[x]=upravovany;
         if(zapsaniDoSouboru(h,n)==-3){
             return -3;
         }
@@ -620,48 +644,47 @@ int upravitMenu(int n, Thraci h[]){
             if(zapsaniDoSouboru(h,n)==-3){
             return -3;
         }
-            //nacti(h,n);
-            return n-1;
+            return 1;
         }
         break;}
     case 57:{
-        return n;
+        return 0;
         break;}
     case 49:{
-        h[x]=Zmenatitul(1,h[x],nazev[1]);
+        upravovany=Zmenatitul(1,upravovany,nazev[1]);
         break;}
 
     case 50:{
-        h[x]=Zmenajmeno(1,h[x],nazev[2]);
+        upravovany=Zmenajmeno(1,upravovany,nazev[2]);
 
     break;
     }
     case 51:{
-        h[x]=Zmenaprijmeni(1,h[x],nazev[3]);
+        upravovany=Zmenaprijmeni(1,upravovany,nazev[3]);
 
     break;
     }
     case 52:{
-        h[x]=Zmenaelo(1,h[x],nazev[4]);
+        upravovany=Zmenaelo(1,upravovany,nazev[4]);
 
     break;
     }
      case 53:{
-    h[x]=Zmenamaxelo(1,h[x],nazev[5]);
+    upravovany=Zmenamaxelo(1,upravovany,nazev[5]);
 
     break;
     }
      case 54:{
-        h[x]=Zmenanarodnosti(1,h[x],nazev[6]);
+        upravovany=Zmenanarodnosti(1,upravovany,nazev[6]);
     break;
     }
 
     case 55:{
-        h[x]=Zmenaroknarozeni(1,h[x],nazev[7]);
+        upravovany=Zmenaroknarozeni(1,upravovany,nazev[7]);
     break;
     }
     case 47:
-        h[x]=Zmenafide(1,h[x],nazev[0],h,n);
+        upravovany=Zmenafide(1,upravovany,nazev[0],h,n);
 
     }}while(volba!=0);
     if(zapsaniDoSouboru(h,n)==-3){
@@ -1079,8 +1102,9 @@ int main(){
         break;
     case 50:
         moznostSwitch = vyhledat(player,n,0);
-        if(moznostSwitch!=-1)
+        if(moznostSwitch!=-1){
         vypisJedna(player[moznostSwitch]);
+        getch();}
         break;
     case 51:
         ISprogram(player,n);
