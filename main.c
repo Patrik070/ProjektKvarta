@@ -107,7 +107,7 @@ int nacti(FILE *in, Thraci p[]){
 int menu(int admin){
     char volba;
     do{
-        printf("\e[2J\e[H");
+        printf("\e[2J\e[H \e[?25l");//clean screen and hide cursor
         printf("\e[1;92m""\t Hlavni menu\n"RESET);
         printf("1 - Vypsat\n");
         printf("2 - Vyhledat\n");
@@ -183,7 +183,7 @@ int vyhledat(Thraci h[], int n, int druh)
         return 0;//vrat hrace
     }
     char volba;
-    int x;
+    int x = -1;
                 int count =n;
                 int countCheck=count;
                 do{
@@ -228,7 +228,9 @@ int vyhledat(Thraci h[], int n, int druh)
 
                                     printf("\e[2J\e[H");
                                     printf("Zadej jmeno hrace:");
+                                    printf("\e[?25h");
                                     scanf("%19s",jmeno);
+                                    printf("\e[?25l");
                                     fflush(stdin);
 
                                 strupr(jmeno);
@@ -250,8 +252,10 @@ int vyhledat(Thraci h[], int n, int druh)
                             {
                                 char prijmeni[20];
                                     printf("\e[2J\e[H");
+                                    printf("\e[?25h");
                                     printf("Zadej prijmeni hrace:");
                                     scanf("%19s",prijmeni);
+                                    printf("\e[?25l");
                                     fflush(stdin);
                                 strupr(prijmeni);
                                 char pomocna[20];
@@ -273,7 +277,9 @@ int vyhledat(Thraci h[], int n, int druh)
                                 do{
                                     printf("\e[2J\e[H");
                                     printf("Zadej rok narozeni hrace (1500-2025) nebo 0:\n");
+                                    printf("\e[?25h");
                                     scanf("%d",&rok);
+                                    printf("\e[?25l");
                                     if(rok==0){volba=53;break;}
                                     if(narozeni(rok)){
                                         printf(RED"mimo rozsah\n"RESET);
@@ -298,7 +304,9 @@ int vyhledat(Thraci h[], int n, int druh)
                 do{
                     printf("\e[2J\e[H");
                     printf("Zadej FIDE ID hrace, nebo 0\n");
+                    printf("\e[?25h");
                     scanf("%d",&key);
+                    printf("\e[?25l");
                     if(key ==0){volba = 53;break;}
 
                 if(key<1000000||key>99999999){
@@ -423,7 +431,9 @@ do{
         printf("\t Nastaveni jmena hrace\n");}
         printf("%-11s",nazev);
         fflush(stdin);
+        printf("\e[?25h");
         scanf("%19s",jmeno);
+        printf("\e[?25l");
         fflush(stdin);
 
     }while(validace(jmeno,19));
@@ -445,7 +455,9 @@ do{
         printf("\t Nastaveni prijmeni hrace\n");}
         printf("%-11s",nazev);
         fflush(stdin);
+        printf("\e[?25h");
         scanf("%19s",prijmeni);
+        printf("\e[?25l");
         fflush(stdin);
 
     }while(validace(prijmeni,19));
@@ -469,7 +481,9 @@ do{
         printf("\t Nastaveni ela hrace\n");}
         printf("1000-3000\n");
         printf("%-11s",nazev);
+        printf("\e[?25h");
         scanf("%d",&elo);
+        printf("\e[?25l");
         if(elo<1000 || elo>3000){
             printf(RED"mimo rozsah\n"RESET);
             getch();
@@ -496,7 +510,9 @@ Thraci Zmenamaxelo(int moznost, Thraci h, char nazev[]){
         printf("\t Nastaveni maximalniho ela hrace\n");}
         printf("%d-3000\n",h.elo);
         printf("%-11s",nazev);
+        printf("\e[?25h");
         scanf("%d",&maxelo);
+        printf("\e[?25l");
         if(maxelo<h.elo || maxelo>3000){
             printf(RED"mimo rozsah\n"RESET);
             getch();
@@ -522,7 +538,9 @@ do{
         printf("\t Nastaveni narodnosti hrace\n");}
         printf("%-11s",nazev);
         fflush(stdin);
+        printf("\e[?25h");
         scanf("%4s",nation);
+        printf("\e[?25l");
         fflush(stdin);
 
     }while(validace(nation,4));
@@ -545,7 +563,9 @@ do{
         printf("\t Nastaveni roku narozeni hrace\n");}
         printf("1500-2025\n");
         printf("%-11s",nazev);
+        printf("\e[?25h");
         scanf("%d",&rokNarozeni);
+        printf("\e[?25l");
         if(narozeni(rokNarozeni)){
             printf(RED"mimo rozsah\n"RESET);
             getch();
@@ -571,7 +591,9 @@ do{
         printf("1.000.000-99.999.999\n");
         printf("%-11s",nazev);
         //player.fideID=89745632;
+        printf("\e[?25h");
         scanf("%d",&fideID);
+        printf("\e[?25l");
         for(int i=0;i<n;i++){
             if(fideID==p[i].fideID){
             printf(RED"obsazeno\n"RESET);
