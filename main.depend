@@ -9,10 +9,13 @@
 	<stdint.h>
 	<inttypes.h>
 
-1741595433 source:r:\4g\projektheslo-main\main.c
+1743401927 source:r:\4g\projektheslo-main\main.c
 	<stdlib.h>
 	<stdio.h>
 	<stdbool.h>
 	<string.h>
 	<conio.h>
+	<ctype.h>
+	<stdint.h>
+	<inttypes.h>
 
