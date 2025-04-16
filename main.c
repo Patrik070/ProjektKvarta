@@ -152,7 +152,7 @@ return -1;
 bool validace(char ch[], int max){//
 	int calc = 0;
 	for(int i = 0;ch[i]!='\0';i++){
-        	if(!(((ch[i]>='a')&&(ch[i]<='z')) || ((ch[i]>='A')&&(ch[i]<='Z')))){
+        	if(!(((ch[i]>='a')&&(ch[i]<='z')) || ((ch[i]>='A')&&(ch[i]<='Z'))|| ch[i]=='-')){
             	printf(RED"\nPouze pismena!\n"RESET);
             	getch();
             	return 1;
@@ -282,13 +282,15 @@ int vyhledat(Thraci h[], int n, int druh)
                                     printf("Zadej rok narozeni hrace (1500-2025) nebo 0:\n");
                                     printf(SHOWC);
                                     scanf("%d",&rok);
+                                    fflush(stdin);
                                     printf(HIDEC);
-                                    if(rok==0){volba=53;break;}
+                                    if(rok==0){volba=53;count=countCheck;break;}
                                     if(narozeni(rok)){
                                         printf(RED"mimo rozsah\n"RESET);
                                         getch();
                                     }
                                 }while(narozeni(rok));
+                                if(rok!=0){
                                 for(int i=0;i<n;i++){
                                     if(h[i].smazano ==0){
                                     if(rok!=h[i].rokNarozeni){
@@ -297,7 +299,7 @@ int vyhledat(Thraci h[], int n, int druh)
                                         count++;
                                         x=i;
                                     }}
-                                }
+                                }}
                                 break;
                             }
                         case 52:
@@ -309,14 +311,15 @@ int vyhledat(Thraci h[], int n, int druh)
                     printf("Zadej FIDE ID hrace, nebo 0\n");
                     printf(SHOWC);
                     scanf("%d",&key);
+                    fflush(stdin);
                     printf(HIDEC);
-                    if(key ==0){volba = 53;break;}
+                    if(key ==0){volba = 53;count=countCheck;break;}
 
-                if(key<1000000||key>99999999){
+                if(key<100000||key>99999999){
                     printf(RED"Mimo rozsah\n"RESET);
                     getch();
                 }
-                }while(key<1000000||key>99999999);
+                }while(key<100000||key>99999999);
                 x = vyhledatID(key, n, h);
                 if(x!=-1 && h[x].smazano==0){
                 count = 1;
@@ -486,6 +489,7 @@ do{
         printf("%-11s",nazev);
         printf(SHOWC);
         scanf("%d",&elo);
+        fflush(stdin);
         printf(HIDEC);
         if(elo<1000 || elo>3000){
             printf(RED"mimo rozsah\n"RESET);
@@ -515,6 +519,7 @@ Thraci Zmenamaxelo(int moznost, Thraci h, char nazev[]){
         printf("%-11s",nazev);
         printf(SHOWC);
         scanf("%d",&maxelo);
+        fflush(stdin);
         printf(HIDEC);
         if(maxelo<h.elo || maxelo>3000){
             printf(RED"mimo rozsah\n"RESET);
@@ -568,6 +573,7 @@ do{
         printf("%-11s",nazev);
         printf(SHOWC);
         scanf("%d",&rokNarozeni);
+        fflush(stdin);
         printf(HIDEC);
         if(narozeni(rokNarozeni)){
             printf(RED"mimo rozsah\n"RESET);
@@ -580,7 +586,7 @@ do{
 
 }
 
-Thraci Zmenafide(int moznost, Thraci player, char nazev[], Thraci p[],int n){
+int Zmenafide(int moznost, Thraci player, char nazev[], Thraci p[],int n){
     int fideID;
     bool error;
 do{
@@ -591,28 +597,30 @@ do{
         printf("\t Uprava FIDE ID hrace\n");
         }else{
         printf("\t Nastaveni FIDE ID hrace\n");}
-        printf("1.000.000-99.999.999\n");
+        printf("100.000-99.999.999\n");
         printf("%-11s",nazev);
         //player.fideID=89745632;
         printf(SHOWC);
+        fflush(stdin);
         scanf("%d",&fideID);
         printf(HIDEC);
+        if(fideID==0){return 0;}
         for(int i=0;i<n;i++){
-            if(fideID==p[i].fideID){
+            if(fideID==p[i].fideID && fideID!=player.fideID){
             printf(RED"obsazeno\n"RESET);
             error = true;
             getch();
             break;
             }
         }
-        if(fideID<1000000 || fideID>99999999){
+        if(fideID<100000 || fideID>99999999){
             printf(RED"mimo rozsah\n"RESET);
             error = true;
             getch();
     }
     }while(error);
-    player.fideID = fideID;
-    return player;
+    //player.fideID = fideID;
+    return fideID;
 
 }
 
@@ -708,9 +716,11 @@ int upravitMenu(int n, Thraci h[]){
         upravovany=Zmenaroknarozeni(1,upravovany,nazev[7]);
     break;
     }
-    case 47:
-        upravovany=Zmenafide(1,upravovany,nazev[0],h,n);
-
+    case 47:{
+        int fide=Zmenafide(1,upravovany,nazev[0],h,n);
+        if(fide!=0)
+            upravovany.fideID=fide;
+    }
     }}while(volba!=0);
     if(zapsaniDoSouboru(h,n)==-3){
             return -3;
@@ -812,7 +822,7 @@ int adminset(){
     char volba;
     do{
         printf(CLEAN);
-        printf(BLACK"\e[47m\tBIOS\n"RESET);
+        printf(BLACK"\e[47m\tTweaks\n"RESET);
         printf("1 - Zmena hesla\n");
         printf(MAGENTA"2 - Odhlasit\n"RESET);
         printf("3 - Comming soon\n");
@@ -850,21 +860,6 @@ int changepass(char nove[]){
 
 
 
-Thraci pridati(){
-Thraci player;
-player.elo = 2000;
-player.fideID = 500;
-strcpy(player.jmeno,"Jan");
-player.maxelo = 2500;
-strcpy(player.nation,"Rus");
-strcpy(player.prijmeni,"Novak");
-player.rokNarozeni = 2004;
-player.smazano = 0;
-strcpy(player.titul,"WFM");
-
-return player;
-}
-
 void pridavani(int x, char nazev[][20], Thraci player, Thraci p[],int n)
 {
     printf(CLEAN);
@@ -891,9 +886,14 @@ void pridavani(int x, char nazev[][20], Thraci player, Thraci p[],int n)
             volba=5;
         }
         switch(volba){
-        case 48:
-            player = Zmenafide(0,player,nazev[0],p,n);
-            break;
+        case 48:{
+            int fide;
+            fide = Zmenafide(0,player,nazev[0],p,n);
+            if(fide!=0){
+                player.fideID=fide;
+            }else{
+            return;}
+            break;}
         case 49:
             player = Zmenatitul(0,player,nazev[1]);
             break;
@@ -927,8 +927,14 @@ void pridavani(int x, char nazev[][20], Thraci player, Thraci p[],int n)
 Thraci pridat(Thraci p[],int n){
     Thraci player;
     char nazev[8][20]={"FIDE ID","Titul","Jmeno","Prijmeni","Elo","Max Elo","Narod","Narozeni"};
+    int fide;
 
-    player=Zmenafide(0,player,nazev[0],p,n);
+    fide=Zmenafide(0,player,nazev[0],p,n);
+    if(fide!=0){
+        player.fideID=fide;
+    }else{
+        player.smazano=1;
+    return player;}
     pridavani(1,nazev,player,p,n);
     player = Zmenatitul(0,player,nazev[1]);
     pridavani(2,nazev,player,p,n);
@@ -1036,13 +1042,13 @@ void seradF(Thraci h[],int n){
 
 void aboutUs(){
     printf(CLEAN);
-    char informace[2][5][50] = {{"Autor:","Trida:","GitHub:","nvm:","Vyrobil:"},{"Patrik Nadvornik","4.G","https://github.com/Patrik070/projektheslo.git","","Patrik Nadvornik 2025"}};
+    char informace[2][5][50] = {{"Autor:","Trida:","GitHub:","Nazev:","Vyrobil:"},{"Patrik Nadvornik","4.G","https://github.com/Patrik070/ProjektKvarta.git","Databaza hracu sachu","Patrik Nadvornik 2025"}};
     printf(CYAN"\t\tAbout me\n"RESET);
     printf("%-10s%s\n",informace[0][0],informace[1][0]);
     printf("%-10s%s\n",informace[0][1],informace[1][1]);
     printf("%-10s%s\n",informace[0][2],informace[1][2]);
     printf("%-10s%s\n",informace[0][3],informace[1][3]);
-    printf("%-10s%s\n",informace[0][4],informace[1][4]);
+    //printf("%-10s%s\n",informace[0][4],informace[1][4]);
 
 
 
@@ -1214,6 +1220,8 @@ int main(){
         }
         break;
         case 54:
+            if(n+1<=MAX){
+
            player[n] = pridat(player,n);
            in = fopen("hraci.txt","a");
             if(in == NULL){
@@ -1221,10 +1229,15 @@ int main(){
                 system("timeout /t 1");
                 return -3;
             }
+            if(player[n].smazano==0){
             fprintf(in,"\n%d %s %s %s %d %d %s %d %d",player[n].fideID,player[n].titul, player[n].jmeno, player[n].prijmeni, player[n].elo, player[n].maxelo, player[n].nation, player[n].rokNarozeni, player[n].smazano);
-            fclose(in);
-
-           n++;
+            n++;
+            }
+            fclose(in);}
+           else{
+            printf(CLEAN RED"Maximum dosazeno!"RESET);
+            getch();
+           }
         break;
 
         case 55:
