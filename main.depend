@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1744796261 source:c:\patrik\gvid\heslo\projektheslo\main.c
+1744809795 source:c:\patrik\gvid\heslo\projektheslo\main.c
 	<stdlib.h>
 	<stdio.h>
 	<stdbool.h>
