@@ -23,3 +23,5 @@
 23783982 None Marin Nadvornik 1524 1524 CZE 2012 0
 23786477 None Patrik Nadvornik 1462 1462 CZE 2007 0
 100002 None Alexander Alekhine 1000 1000 FRA 1892 0
+11223344 GM Daniel Nadvornik 2999 3000 CZ 2009 0
+

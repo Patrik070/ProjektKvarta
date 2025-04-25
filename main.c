@@ -874,6 +874,7 @@ void pridavani(int x, char nazev[][20], Thraci player, Thraci p[],int n)        
         if(volba>=x+48){
             volba=ERR-1;
         }
+        fflush(stdin);
         switch(volba){
         case 48:{
             int fide;
