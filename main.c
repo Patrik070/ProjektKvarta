@@ -1049,7 +1049,7 @@ char informace[5][50] = {"pocet hracu jest:","prumerne elo jest:","nejvyssi elo 
     printf(CLEAN);
     printf(GREEN"\tStats for nerds\n"RESET);
     printf("%-20s%d\n",informace[0],n);
-    printf("%-20s%f\n",informace[1],1.0*soucet/n);//aritmeticky prumer ela
+    printf("%-20s%.2f\n",informace[1],1.0*soucet/n);//aritmeticky prumer ela
     printf("%-20s%-4d\n",informace[2],h[maxPoz].elo);//nejlepsi hrac elo
     printf("%-20s%s %s\n",informace[3],h[maxPoz].jmeno,h[maxPoz].prijmeni); //nejlepsi hrac
     if(n%2==0){
